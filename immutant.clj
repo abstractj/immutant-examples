@@ -27,19 +27,19 @@
 ;; Daemon
 (def done (atom false))
 
-(defrecord BeerService []
-  daemon/Daemon
-  (start [_]
-    (reset! done false)
-    (loop [i 0]
-      (Thread/sleep 1000)
-      (when-not @done
-        (listener)
-        (recur (inc i)))))
-  (stop [_] (reset! done true)))
+(defn start []
+  (reset! done false)
+  (loop [i 0]
+    (Thread/sleep 1000)
+    (when-not @done
+      (listener)
+      (recur (inc i)))))
+
+(defn stop []
+  (reset! done true))
 
 ;; Register the daemon
-(daemon/create "beerdaemon" (BeerService.) :singleton true)
+(daemon/daemonize "beerdaemon" start stop :singleton false)
 
 ;; Scheduling
 
