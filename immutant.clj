@@ -4,7 +4,8 @@
   (:use beer.core)
   (:require [immutant.messaging :as msg]
             [immutant.web :as web]
-            [immutant.daemons :as daemon]))
+            [immutant.daemons :as daemon]
+            [immutant.jobs :as jobs]))
 
 (defn beer-handler [request]
   {:status 200
@@ -40,10 +41,11 @@
 ;; Register the daemon
 (daemon/create "beerdaemon" (BeerService.) :singleton true)
 
+;; Scheduling
 
-;; Messaging allows for starting (and stopping) destinations (queues & topics)
-;; and listening for messages on a destination.
 
-; (messaging/start "/queue/a-queue")
-; (messaging/listen "/queue/a-queue" #(println "received: " %))
+(jobs/schedule "beer-job" "*/2 * * * * ?"
+  #(println "Job was called!")
+  :singleton false)
+
 
