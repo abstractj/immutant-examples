@@ -1,26 +1,17 @@
 ;; Ring support
 
-;(ns beer.init
-  ;(:use beer.core)
-;  (:require [immutant.messaging :as messaging]
-;            [immutant.web :as web]))
-
-;(defn beer-handler [request]
-;  {:status 200
-;   :headers {"Content-Type" "text/html"}
-;   :body "Immutant up and running!"})
-
-;(web/start "/" beer-handler)
-
-;; Noir support
 (ns beer.init
   (:use beer.core)
-  (:require [immutant.web :as web]
-            [noir.server :as server]
-            [beer.core :as core]))
+  (:require [immutant.messaging :as messaging]
+            [immutant.web :as web]))
 
-(server/load-views (str (web/src-dir) "/beer/views"))
-(web/start "/" (server/gen-handler {:mode :dev :ns 'beer}))
+(defn beer-handler [request]
+  {:status 200
+   :headers {"Content-Type" "text/html"}
+   :body "Immutant up and running!"})
+
+(web/start "/" beer-handler)
+
 
 ;; This file will be loaded when the application is deployed to Immutant, and
 ;; can be used to start services your app needs. Examples:
